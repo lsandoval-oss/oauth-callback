@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Redirigiendo...</title></head>
+<body>
+<p>Redirigiendo a la aplicacion...</p>
+<script>
+var params = new URLSearchParams(window.location.search);
+var state = params.get('state');
+var code = params.get('code');
+if (state && code) {
+    window.location.href = state + '?code=' + encodeURIComponent(code);
+} else {
+    document.body.innerHTML = '<p>Error: faltan parametros.</p>';
+}
+</script>
+</body>
+</html>
