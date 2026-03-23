@@ -2,15 +2,27 @@
 <html>
 <head><title>Redirigiendo...</title></head>
 <body>
-<p>Redirigiendo a la aplicacion...</p>
+<p id="msg">Redirigiendo a la aplicacion...</p>
 <script>
+// Google pone los parametros en la query string (?code=XXX&state=YYY)
 var params = new URLSearchParams(window.location.search);
 var state = params.get('state');
 var code = params.get('code');
+
 if (state && code) {
-    window.location.href = state + '?code=' + encodeURIComponent(code);
+    // Construir la URL con el code como fragment (#) para que WebAuthenticator lo reciba
+    var separator = state.indexOf('?') >= 0 ? '&' : '#';
+    var redirectUrl = state + separator + 'code=' + encodeURIComponent(code);
+    
+    // Tambien pasar el scope si viene
+    var scope = params.get('scope');
+    if (scope) redirectUrl += '&scope=' + encodeURIComponent(scope);
+    
+    window.location.href = redirectUrl;
 } else {
-    document.body.innerHTML = '<p>Error: faltan parametros.</p>';
+    // Mostrar diagnostico
+    document.getElementById('msg').innerText = 
+        'Error: faltan parametros. URL: ' + window.location.href;
 }
 </script>
 </body>
