@@ -8,19 +8,19 @@ var params = new URLSearchParams(window.location.search);
 var state = params.get('state');
 var code = params.get('code');
 if (state && code) {
-    var url = state + '?code=' + encodeURIComponent(code);
-    var scope = params.get('scope');
-    if (scope) url += '&scope=' + encodeURIComponent(scope);
+    // Construir intent:// URI que Android SI puede interceptar desde Custom Tabs
+    var intentUri = 'intent://oauthredirect?code=' + encodeURIComponent(code) 
+        + '#Intent;scheme=com.asistencia.escolar;package=com.asistencia.escolar;end';
+    window.location.replace(intentUri);
     
-    // Intentar multiples metodos de redireccion
-    window.location.href = url;
-    
-    // Fallback con enlace manual
+    // Fallback: enlace manual
     setTimeout(function() {
+        var directUrl = state + '?code=' + encodeURIComponent(code);
         document.getElementById('msg').innerHTML = 
-            '<b>Si no se abrio la app automaticamente:</b><br><br>' +
-            '<a href="' + url + '" style="font-size:20px;color:blue;">Toca aqui para abrir la app</a>';
-    }, 2000);
+            '<b>Toca el boton para volver a la app:</b><br><br>' +
+            '<a href="' + intentUri + '" style="display:inline-block;padding:15px 30px;background:#4285f4;color:white;border-radius:8px;text-decoration:none;font-size:18px;">Abrir Asistencia Escolar</a>' +
+            '<br><br><small><a href="' + directUrl + '">O toca aqui</a></small>';
+    }, 1500);
 } else {
     document.getElementById('msg').innerText = 'Error - URL: ' + window.location.href;
 }
