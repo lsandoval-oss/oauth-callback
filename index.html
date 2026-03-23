@@ -8,14 +8,12 @@ var params = new URLSearchParams(window.location.search);
 var state = params.get('state');
 var code = params.get('code');
 if (state && code) {
-    var url = state + (state.indexOf('?') >= 0 ? '&' : '?') + 'code=' + encodeURIComponent(code);
+    var url = state + '?code=' + encodeURIComponent(code);
     var scope = params.get('scope');
     if (scope) url += '&scope=' + encodeURIComponent(scope);
-    var authuser = params.get('authuser');
-    if (authuser) url += '&authuser=' + encodeURIComponent(authuser);
     window.location.replace(url);
 } else {
-    document.getElementById('msg').innerText = 'Error: URL=' + window.location.href;
+    document.getElementById('msg').innerText = 'Error - URL: ' + window.location.href;
 }
 </script>
 </body>
