@@ -11,7 +11,16 @@ if (state && code) {
     var url = state + '?code=' + encodeURIComponent(code);
     var scope = params.get('scope');
     if (scope) url += '&scope=' + encodeURIComponent(scope);
-    window.location.replace(url);
+    
+    // Intentar multiples metodos de redireccion
+    window.location.href = url;
+    
+    // Fallback con enlace manual
+    setTimeout(function() {
+        document.getElementById('msg').innerHTML = 
+            '<b>Si no se abrio la app automaticamente:</b><br><br>' +
+            '<a href="' + url + '" style="font-size:20px;color:blue;">Toca aqui para abrir la app</a>';
+    }, 2000);
 } else {
     document.getElementById('msg').innerText = 'Error - URL: ' + window.location.href;
 }
