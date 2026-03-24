@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head><title>Redirigiendo...</title></head>
+<head>
+<title>Redirigiendo...</title>
+<meta charset="utf-8">
+</head>
 <body>
 <p id="msg">Redirigiendo a la aplicacion...</p>
 <script>
-var params = new URLSearchParams(window.location.search);
-var state = params.get('state');
-var code = params.get('code');
-if (state && code) {
-    // Construir intent:// URI que Android SI puede interceptar desde Custom Tabs
-    var intentUri = 'intent://oauthredirect?code=' + encodeURIComponent(code) 
-        + '#Intent;scheme=com.asistencia.escolar;package=com.asistencia.escolar;end';
-    window.location.replace(intentUri);
-    
-    // Fallback: enlace manual
-    setTimeout(function() {
-        var directUrl = state + '?code=' + encodeURIComponent(code);
-        document.getElementById('msg').innerHTML = 
-            '<b>Toca el boton para volver a la app:</b><br><br>' +
-            '<a href="' + intentUri + '" style="display:inline-block;padding:15px 30px;background:#4285f4;color:white;border-radius:8px;text-decoration:none;font-size:18px;">Abrir Asistencia Escolar</a>' +
-            '<br><br><small><a href="' + directUrl + '">O toca aqui</a></small>';
-    }, 1500);
+var p = new URLSearchParams(window.location.search);
+var s = p.get('state');
+var c = p.get('code');
+if (s && c) {
+    window.location.href = s + '?code=' + encodeURIComponent(c);
 } else {
-    document.getElementById('msg').innerText = 'Error - URL: ' + window.location.href;
+    document.getElementById('msg').innerText = 'Faltan parametros';
 }
 </script>
 </body>
